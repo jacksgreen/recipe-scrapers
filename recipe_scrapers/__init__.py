@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from .ottolenghi import Ottolenghi
 
 __all__ = (
