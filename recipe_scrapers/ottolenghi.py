@@ -18,12 +18,8 @@ class Ottolenghi(AbstractScraper):
     def total_time(self):
         return self.schema.total_time()
 
-    def yields(self):
-        return self.schema.yields()
-
     def image(self):
         return self.soup.find('div', class_='c-recipe-header__gallery').find('img')['src']
-    
 
     def ingredients(self):
         return self.schema.ingredients()
