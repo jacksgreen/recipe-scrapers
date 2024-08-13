@@ -1,5 +1,5 @@
 from ._abstract import AbstractScraper
-
+from ._grouping_utils import group_ingredients
 
 class Ottolenghi(AbstractScraper):
     @classmethod
@@ -27,6 +27,14 @@ class Ottolenghi(AbstractScraper):
 
     def ingredients(self):
         return self.schema.ingredients()
+    
+    def ingredient_groups(self):
+        return group_ingredients(
+            self.ingredients(),
+            self.soup,
+            ".c-recipe-ingredients__heading",
+            ".c-recipe-ingredients tr:not(:has(.c-recipe-ingredients__heading))"
+        )
 
     def instructions(self):
         return self.schema.instructions()
@@ -39,3 +47,12 @@ class Ottolenghi(AbstractScraper):
 
     def description(self):
         return self.schema.title()
+    
+    def yields(self):
+        return self.soup.find('div', class_='c-recipe-header__timings').find('span').get_text(strip=True)
+    
+    def prep_time(self):
+        return self.soup.find('div', class_='c-recipe-header__timings').find_all('span')[1].get_text(strip=True)
+    
+    def cook_time(self):
+        return self.soup.find('div', class_='c-recipe-header__timings').find_all('span')[2].get_text(strip=True)
